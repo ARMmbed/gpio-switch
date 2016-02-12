@@ -1,2 +1,2 @@
-# wrd-gpio-switch
-Wearable Reference Design GPIO switch.
+# gpio-switch
+Switch between internal and external GPIO.

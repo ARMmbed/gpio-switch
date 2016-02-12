@@ -1,0 +1,21 @@
+{
+  "name": "gpio-switch",
+  "version": "0.0.0",
+  "description": "Switch between internal and external GPIO.",
+  "keywords": [],
+  "author": "Marcus Chang <marcus.chang@arm.com>",
+  "repository": {
+    "url": "git@github.com:ARMmbed/gpio-switch.git",
+    "type": "git"
+  },
+  "homepage": "https://github.com/ARMmbed/gpio-switch",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "mbed-drivers": "~0.12.0"
+  },
+  "targetDependencies": {
+    "nxp-pcal64": {
+      "gpio-pcal64": "*"
+    }
+  }
+}
