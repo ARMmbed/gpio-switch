@@ -18,10 +18,43 @@
 #ifndef __GPIO_INTERRUPT_IN_EX_H__
 #define __GPIO_INTERRUPT_IN_EX_H__
 
+#include "mbed-drivers/mbed.h"
+#include "gpio-switch/GPIOSwitch.h"
+
+using namespace mbed::util;
+
 class InterruptInEx
 {
 public:
-    InterruptInEx() {}
+    InterruptInEx(uint32_t pin, uint32_t location = 0);
+
+
+    void rise(void (*callback)(void));
+
+    template <typename T>
+    void rise(T* object, void (T::*member)(void))
+    {
+        FunctionPointer0<void> fp(object, member);
+        GPIOSwitch::rise(pin, location, object, member);
+    }
+
+    void fall(void (*callback)(void));
+
+    template <typename T>
+    void fall(T* object, void (T::*member)(void))
+    {
+        FunctionPointer0<void> fp(object, member);
+        GPIOSwitch::fall(pin, location, object, member);
+    }
+
+    void detachAll(void)
+    {
+        GPIOSwitch::detachAll(pin, location);
+    }
+
+private:
+    uint32_t pin;
+    uint32_t location;
 };
 
 #endif // __GPIO_INTERRUPT_IN_EX_H__

@@ -18,10 +18,44 @@
 #ifndef __GPIO_DIGITAL_OUT_EX_H__
 #define __GPIO_DIGITAL_OUT_EX_H__
 
+#include "mbed-drivers/mbed.h"
+#include "gpio-switch/GPIOSwitch.h"
+
+using namespace mbed::util;
+
 class DigitalOutEx
 {
 public:
-    DigitalOutEx() {}
+    DigitalOutEx(uint32_t _pin, uint32_t _location = 0)
+        :   pin(_pin),
+            location(_location)
+    {}
+
+    void write(int value, FunctionPointer0<void> callback)
+    {
+        GPIOSwitch::write(pin, location, value, callback);
+    }
+
+    template <typename T>
+    void write(int value, T* object, void (T::*member)(void))
+    {
+        GPIOSwitch::write(pin, location, value, object, member);
+    }
+
+    void read(FunctionPointer1<void, int> callback)
+    {
+        GPIOSwitch::read(pin, location, callback);
+    }
+
+    template <typename T>
+    void read(T* object, void (T::*member)(void))
+    {
+        GPIOSwitch::read(pin, location, object, member);
+    }
+
+private:
+    uint32_t pin;
+    uint32_t location;
 };
 
 #endif // __GPIO_DIGITAL_OUT_EX_H__

@@ -16,46 +16,48 @@
  */
 
 #include "gpio-switch/GPIOSwitch.h"
+#include "gpio-pcal64/PCAL64.h"
+#include "wrd-utilities/SharedModules.h"
 
-namespace gpio {
+static PCAL64 ioexpander1(YOTTA_CFG_HARDWARE_WEARABLE_REFERENCE_DESIGN_EXTERNAL_GPIO_I2C_NAME,
+                          PCAL64::PRIMARY_ADDRESS,
+                          YOTTA_CFG_HARDWARE_WEARABLE_REFERENCE_DESIGN_EXTERNAL_GPIO_PIN_IRQ1);
 
+static PCAL64 ioexpander2(YOTTA_CFG_HARDWARE_WEARABLE_REFERENCE_DESIGN_EXTERNAL_GPIO_I2C_NAME,
+                          PCAL64::SECONDARY_ADDRESS,
+                          YOTTA_CFG_HARDWARE_WEARABLE_REFERENCE_DESIGN_EXTERNAL_GPIO_PIN_IRQ2);
 
-DigitalOutEx::DigitalOutEx()
+void GPIOSwitch::detachAll(uint32_t pin, uint32_t location)
 {
-
+//    printf("detachAll: %lu %lu\r\n", pin, location);
 }
 
-DigitalInEx::DigitalInEx()
+void GPIOSwitch::read(uint32_t pin, uint32_t location, FunctionPointer1<void, int> callback)
 {
-
+    if (location == PCAL64::PRIMARY_ADDRESS)
+    {
+        ioexpander1.read(pin, callback);
+    }
+    else if (location == PCAL64::SECONDARY_ADDRESS)
+    {
+        ioexpander2.read(pin, callback);
+    }
 }
 
-InterruptInEx::InterruptInEx()
+void GPIOSwitch::write(uint32_t pin, uint32_t location, int value, FunctionPointer0<void> _callback)
 {
-
+    if (location == PCAL64::PRIMARY_ADDRESS)
+    {
+        ioexpander1.set(pin, PCAL64::Output)
+                   .set(pin, value)
+                   .callback(_callback);
+    }
+    else if (location == PCAL64::SECONDARY_ADDRESS)
+    {
+        ioexpander2.set(pin, PCAL64::Output)
+                   .set(pin, value)
+                   .callback(_callback);
+    }
 }
 
-
-DigitalOutEx output()
-{
-    DigitalOutEx result;
-
-    return result;
-}
-
-DigitalInEx input()
-{
-    DigitalInEx result;
-
-    return result;
-}
-
-InterruptInEx interrupt()
-{
-    InterruptInEx result;
-
-    return result;
-}
-
-}
 
