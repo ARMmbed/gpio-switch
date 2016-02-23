@@ -1,6 +1,6 @@
 {
   "name": "gpio-switch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Switch between internal and external GPIO.",
   "keywords": [],
   "author": "Marcus Chang <marcus.chang@arm.com>",
